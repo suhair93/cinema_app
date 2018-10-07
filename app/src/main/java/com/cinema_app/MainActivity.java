@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private int[] tabIcons = {
             R.drawable.now,
             R.drawable.soon,
-            R.drawable.lab,
+
             R.drawable.profile,
 
 
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new Home(),getResources().getString(R.string.now));
         adapter.addFragment(new soon(),getResources().getString(R.string.soon));
-        adapter.addFragment(new Laberity(),getResources().getString(R.string.theater));
+
         adapter.addFragment(new Profile(),getResources().getString(R.string.profile));
 
 
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
-        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+
 
         View view1 = getLayoutInflater().inflate(R.layout.customtab, null);
         view1.findViewById(R.id.icon).setBackgroundResource(tabIcons[0]);
@@ -111,9 +111,7 @@ public class MainActivity extends AppCompatActivity {
         view3.findViewById(R.id.icon).setBackgroundResource(tabIcons[2]);
         tabLayout.getTabAt(2).setCustomView(view3);
 
-        View view4 = getLayoutInflater().inflate(R.layout.customtab, null);
-        view4.findViewById(R.id.icon).setBackgroundResource(tabIcons[3]);
-        tabLayout.getTabAt(3).setCustomView(view4);
+
 
         tabLayout.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
 

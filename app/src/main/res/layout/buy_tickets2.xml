@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+android:fillViewport="true"
+    android:background="@color/colorPrimaryDark"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+       >
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:background="@color/colorAccent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="seat selection"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_medium"/>
+
+            <Button
+                android:id="@+id/next"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/margin10"
+                android:text="Next  "
+             android:background="@color/colorAccent"
+                android:textSize="@dimen/text_medium"
+
+                />
+
+
+        </android.support.v7.widget.Toolbar>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/margin"
+          android:background="@color/colorAccent"
+          android:orientation="vertical"
+          >
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+              <ImageView
+                  android:layout_width="50dp"
+                  android:layout_height="50dp"
+
+                  android:background="@drawable/movies"
+                  android:layout_gravity="center"
+                  android:gravity="center"
+
+                  />
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/margin10"
+                  android:textSize="@dimen/text_medium"
+                  android:textColor="@color/colorPrimaryDark"
+                  android:text="Movie:  "
+                  android:gravity="center"
+
+                  />
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/margin10"
+                  android:textSize="@dimen/text_medium"
+                  android:textColor="@color/colorPrimaryDark"
+                  android:text="The day"
+                  android:gravity="center"
+
+                  />
+
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+              <ImageView
+                  android:layout_width="50dp"
+                  android:layout_height="50dp"
+
+                  android:background="@drawable/lab1"
+                  android:layout_gravity="center"
+                  android:gravity="center"
+
+                  />
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/margin10"
+                  android:textSize="@dimen/text_medium"
+                  android:textColor="@color/colorPrimaryDark"
+                  android:text="Laberity:  "
+                  android:gravity="center"
+
+                  />
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/margin10"
+                  android:textSize="@dimen/text_medium"
+                  android:textColor="@color/colorPrimaryDark"
+                  android:text="Laberity1"
+                  android:gravity="center"
+
+                  />
+
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+              <ImageView
+                  android:layout_width="50dp"
+                  android:layout_height="50dp"
+
+                 android:background="@drawable/date1"
+                  android:layout_gravity="center"
+                  android:gravity="center"
+
+                  />
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+
+                  android:textSize="@dimen/text_medium"
+                  android:textColor="@color/colorPrimaryDark"
+                  android:text="12/08/2018"
+                  android:layout_gravity="center_vertical"
+                  android:gravity="center"
+
+                  />
+              <ImageView
+                  android:layout_width="50dp"
+                  android:layout_height="50dp"
+
+                  android:background="@drawable/time1"
+                  android:layout_gravity="center"
+                  android:gravity="center"
+
+                  />
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+
+                  android:textSize="@dimen/text_medium"
+                  android:textColor="@color/colorPrimaryDark"
+                  android:text="10:00 pm"
+                  android:layout_gravity="center_vertical"
+                  android:gravity="center"
+
+                  />
+
+          </LinearLayout>
+      </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:textSize="@dimen/text_medium"
+            android:textColor="@color/white"
+            android:text="Select seats "
+            android:gravity="center"
+
+            />
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/margin10"
+            android:background="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <by.anatoldeveloper.hallscheme.view.ZoomableImageView
+                android:id="@+id/zoomable_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+
+
+        
+        
+        
+        
+    </LinearLayout>
+</ScrollView>
