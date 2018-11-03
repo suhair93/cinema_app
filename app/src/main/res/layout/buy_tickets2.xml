@@ -182,12 +182,19 @@ android:fillViewport="true"
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
             android:layout_margin="@dimen/margin10"
-            android:background="@color/colorAccent"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+          <android.support.v7.widget.RecyclerView
+              android:id="@+id/recycler"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+          </android.support.v7.widget.RecyclerView>
 
             <by.anatoldeveloper.hallscheme.view.ZoomableImageView
                 android:id="@+id/zoomable_image"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

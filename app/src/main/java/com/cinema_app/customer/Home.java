@@ -87,10 +87,12 @@ public class Home extends Fragment {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     movies movies = snapshot.getValue(movies.class);
-                    if (movies.getType().equals("1"))
+                    if (movies.getType().equals("1")){
 
                     lList.add(movies);
                     nAdapter.notifyDataSetChanged();}
+                else {}
+                }
 
 
                 Collections.reverse(lList);

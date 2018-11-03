@@ -1,9 +1,11 @@
 package com.cinema_app.customer;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -100,5 +102,14 @@ public class buyTick extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "no connected internet", Toast.LENGTH_SHORT).show();
             }
 
-        });}
+        });
+     next.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+             Intent i = new Intent(buyTick.this,seat.class);
+             startActivity(i);
+         }
+     });
+
+    }
 }
