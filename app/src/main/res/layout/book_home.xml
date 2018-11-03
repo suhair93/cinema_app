@@ -16,9 +16,9 @@
        >
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:gravity="center"
-            android:background="@color/colorAccent">
+            android:background="@color/gold">
 
             <TextView
                 android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/margin10"
                 android:text="Next  "
-                android:background="@color/colorAccent"
+               android:background="@color/gold"
                 android:textSize="@dimen/text_medium"
 
                 />
@@ -43,63 +43,64 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@drawable/a"/>
-
-        <TextView
+            android:layout_height="110dp"
+            android:id="@+id/img"
+          />
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin10"
-            android:textSize="@dimen/text_medium"
-            android:textColor="@color/white"
-            android:text="Select the laberity "
-            android:gravity="center"
+            android:orientation="vertical">
 
-            />
-        <RelativeLayout
-
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/button_layout"
-            android:layout_marginRight="@dimen/margin"
-
-            android:layoutDirection="rtl"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="@dimen/margin"
-
-            android:background="@drawable/corner"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/spinneridNo"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:background="@android:color/transparent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
+                android:text="About movie "
+                android:textColor="@color/gold"
+                android:textSize="17dp"
+                android:textStyle="bold"
 
-                android:spinnerMode="dropdown" />
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_medium"
+                android:id="@+id/about"
+                android:textColor="@color/white"
+                android:text="Bohemian Rhapsody este o celebrare a legendarei trupe Queen, a muzici care a sfidat  "
+                android:gravity="start"
 
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin10"
+            android:gravity="center"
+            android:orientation="horizontal">
             <ImageButton
                 android:layout_width="@dimen/img"
                 android:layout_height="@dimen/img"
+                android:layout_marginEnd="@dimen/margin10"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:background="@drawable/arrow" />
+                android:background="@drawable/show" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@color/gold"
+                android:text="Place to watch the movie "
+                android:gravity="center"
 
-        </RelativeLayout>
+                />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin10"
-            android:textSize="@dimen/text_medium"
-            android:textColor="@color/white"
-            android:text="Select the date "
-            android:gravity="center"
-
-            />
         <RelativeLayout
 
             android:layout_width="wrap_content"
@@ -113,37 +114,46 @@
             android:background="@drawable/corner"
             android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/spinnerdate"
+            <TextView
+                android:id="@+id/lab"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_gravity="center"
+                android:layout_gravity="start"
                 android:background="@android:color/transparent"
                 android:gravity="center"
 
+                android:textColor="@color/white"
                 android:spinnerMode="dropdown" />
 
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin10"
+            android:gravity="center"
+            android:orientation="horizontal">
             <ImageButton
                 android:layout_width="@dimen/img"
                 android:layout_height="@dimen/img"
+                android:layout_marginEnd="@dimen/margin10"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:background="@drawable/date" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@color/gold"
+                android:text="Show time for the movie "
+                android:gravity="center"
 
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin10"
-            android:textSize="@dimen/text_medium"
-            android:textColor="@color/white"
-            android:text="Select the show time "
-            android:gravity="center"
-
-            />
+                />
+        </LinearLayout>
         <RelativeLayout
 
             android:layout_width="wrap_content"
@@ -157,24 +167,71 @@
             android:background="@drawable/corner"
             android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/spinnertime"
+            <TextView
+                android:id="@+id/showTime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
                 android:gravity="center"
-
+                android:textColor="@color/white"
                 android:spinnerMode="dropdown" />
 
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin10"
+            android:gravity="center"
+            android:orientation="horizontal">
             <ImageButton
                 android:layout_width="@dimen/img"
                 android:layout_height="@dimen/img"
+                android:layout_marginEnd="@dimen/margin10"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:background="@drawable/time" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_medium"
+                android:textColor="@color/gold"
+                android:text="The length of the movie "
+                android:gravity="center"
+
+                />
+        </LinearLayout>
+        <RelativeLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_layout"
+            android:layout_marginRight="@dimen/margin"
+
+            android:layoutDirection="rtl"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="@dimen/margin"
+
+            android:background="@drawable/corner"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/length"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:spinnerMode="dropdown" />
+
+
 
 
 

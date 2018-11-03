@@ -10,13 +10,17 @@
     <string name="phone">Phone</string>
     <string name="create_account">Create Account</string>
     <string name="re_password">Return Password</string>
-    <string name="now">Now Showing Movies</string>
+    <string name="now">Now Showing </string>
     <string name="soon">Coming Soon</string>
     <string name="profile">Profile</string>
     <string name="theater">Theater</string>
     <string name="book">BOOK</string>
     <string name="MORE">MORE</string>
+    <string-array name="type">
+        <item>showing now</item>
+        <item>coming soon</item>
 
+    </string-array>
     <string name="search">Search by movie name</string>
     <string name="purchase">Purchase</string>
     <string name="valid">Form is valid</string>
