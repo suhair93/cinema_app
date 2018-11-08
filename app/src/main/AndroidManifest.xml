@@ -11,8 +11,8 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="Golden Cinema"
+        android:roundIcon="@drawable/logos"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".customer.MainActivity"
@@ -29,8 +29,6 @@
         </activity>
         <activity android:name=".Signup"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".customer.seat"
-            android:windowSoftInputMode="stateHidden" ></activity>
         <activity android:name=".customer.visacard"
             android:windowSoftInputMode="stateHidden" ></activity>
         <activity android:name=".customer.buyTick"

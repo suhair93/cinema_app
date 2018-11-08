@@ -1,9 +1,12 @@
 package com.cinema_app.customer;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -19,14 +22,25 @@ import com.braintreepayments.cardform.view.CardEditText;
 import com.braintreepayments.cardform.view.CardForm;
 import com.braintreepayments.cardform.view.SupportedCardTypesView;
 import com.cinema_app.R;
+import com.cinema_app.models.Keys;
+import com.cinema_app.models.Reservation;
+import com.cinema_app.models.Seat;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class visacard extends AppCompatActivity implements OnCardFormSubmitListener,
         CardEditText.OnCardTypeChangedListener {
-
+    ProgressDialog progressDialog;
+    DatabaseReference ref;
+    FirebaseDatabase database;
+    Bundle bundle;
     private static final CardType[] SUPPORTED_CARD_TYPES = { CardType.VISA, CardType.MASTERCARD };
 
     private SupportedCardTypesView mSupportedCardTypesView;
-
+    SharedPreferences prefs =  getSharedPreferences(Keys.KEY_ID, MODE_PRIVATE);
+     String  email_customer = prefs.getString(Keys.KEY_CUSTOMER,"");
     protected CardForm mCardForm;
 
     @Override
@@ -41,6 +55,10 @@ public class visacard extends AppCompatActivity implements OnCardFormSubmitListe
             window.setStatusBarColor(getResources().getColor(R.color.colorAccent));
 
         }
+
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference();
+
             mSupportedCardTypesView = findViewById(R.id.supported_card_types);
         mSupportedCardTypesView.setSupportedCardTypes(SUPPORTED_CARD_TYPES);
 
@@ -62,22 +80,44 @@ public class visacard extends AppCompatActivity implements OnCardFormSubmitListe
         // Failure to set FLAG_SECURE exposes your app to screenshots allowing other apps to steal card information.
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
+        bundle = getIntent().getExtras();
+        if(bundle != null){
+            bundle.get("details");
+            bundle.get("id");
+            bundle.get("place");
+            bundle.get("timeShow");
+            bundle.get("length");
+            bundle.getParcelableArrayList("seat");
+
+
+
+
+        }
+
         Button payment = findViewById(R.id.payment);
         payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(visacard.this);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(visacard.this);
                 builder.setMessage("Are you sure of the booking?");
                 builder.setCancelable(true)
                         .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                Reservation reservation = new Reservation();
+                                reservation.setDetails(bundle.getString("details"));
+                                reservation.setId( bundle.getString("id"));
+                                reservation.setLength(bundle.getString("length"));
+                                reservation.setPrice(bundle.getString("price"));
+                                reservation.setTimeShow(bundle.getString("timeShow"));
+                                reservation.setSeats(bundle.<Seat>getParcelableArrayList("seat"));
+                                reservation.setEmail_customer(email_customer);
 
-
-                                Toast.makeText(getBaseContext(), "Thank you dear for dealing with us", Toast.LENGTH_LONG).show();
-                                Intent i = new Intent(visacard.this,MainActivity.class);
-                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(i);
-                                finish();
+                                ref.child("reservation").push().setValue(reservation);
+//                                Toast.makeText(getBaseContext(), "Thank you dear for dealing with us", Toast.LENGTH_LONG).show();
+//                                Intent i = new Intent(visacard.this,MainActivity.class);
+//                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                startActivity(i);
+//                                finish();
                                 //System.exit(0);
                             }
                         })

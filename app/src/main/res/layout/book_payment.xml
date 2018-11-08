@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:fillViewport="true"
-    android:background="@color/white1"
+    android:background="@color/black_gray"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
+            android:visibility="gone"
             android:background="@color/colorPrimary"
             android:orientation="horizontal">
             <ImageView
@@ -100,6 +101,7 @@
                 android:gravity="center"
                 android:background="@color/colorAccent"
                 android:text=" Payment "
+                android:layout_marginBottom="30dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_marginTop="@dimen/margin"
                 />

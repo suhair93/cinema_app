@@ -2,9 +2,11 @@ package com.cinema_app.customer;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,11 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.cinema_app.Adapter.SeatAdapter;
 import com.cinema_app.R;
-import com.cinema_app.models.Keys;
-import com.cinema_app.models.SeatExample;
+import com.cinema_app.models.Seat;
 import com.cinema_app.models.movies;
-import com.cinema_app.models.user;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,19 +28,18 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import by.anatoldeveloper.hallscheme.hall.HallScheme;
-import by.anatoldeveloper.hallscheme.hall.Seat;
-import by.anatoldeveloper.hallscheme.hall.SeatListener;
-import by.anatoldeveloper.hallscheme.view.ZoomableImageView;
 
 public class buyTick extends AppCompatActivity {
           String id = "";
-          TextView about,place,timeShow ,length;
+          TextView about,place,timeShow ,length,price;
           ImageView img;
           Button next;
           ProgressDialog dialog;
     FirebaseDatabase database;
     DatabaseReference ref;
+    RecyclerView recyclerView;
+    List<Seat> list = new ArrayList<>();
+    SeatAdapter seatAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,15 +56,27 @@ public class buyTick extends AppCompatActivity {
         next = findViewById(R.id.next);
         about = findViewById(R.id.about);
 
+        price = findViewById(R.id.price);
+
         dialog = new ProgressDialog(buyTick.this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("loading...");
         dialog.setIndeterminate(true);
         dialog.setCanceledOnTouchOutside(false);
 
-        Bundle bundle =  getIntent().getExtras();
-        if(bundle!=null){
-            id = bundle.getString("id","");
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            id = bundle.getString("id", "");
+        }
+
+
+        recyclerView = findViewById(R.id.recycler);
+        seatAdapter = new SeatAdapter(getApplicationContext(),list);
+        recyclerView.setAdapter(seatAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),10));
+
+        for (int i =0 ; i<= 59 ; i++){
+            list.add(new Seat(i,false+""));
         }
 
 
@@ -106,10 +118,18 @@ public class buyTick extends AppCompatActivity {
      next.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-             Intent i = new Intent(buyTick.this,seat.class);
+             Intent i = new Intent(buyTick.this,visacard.class);
+             i.putExtra("details",about.getText().toString());
+             i.putExtra("place",place.getText().toString());
+             i.putExtra("timeShow",timeShow.getText().toString());
+             i.putExtra("length",length.getText().toString());
+             i.putExtra("id",id);
+             i.putParcelableArrayListExtra("seat", (ArrayList<? extends Parcelable>) list);
              startActivity(i);
          }
      });
+
+
 
     }
 }

@@ -16,6 +16,7 @@ import com.cinema_app.Login;
 import com.cinema_app.R;
 import com.cinema_app.customer.buyTick;
 import com.cinema_app.models.Keys;
+import com.cinema_app.models.Seat;
 import com.cinema_app.models.movies;
 
 import java.util.List;
@@ -25,9 +26,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class SeatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Integer> list ;
+    private List<Seat> list ;
     private Context context;
-    public SeatAdapter(Context context, List<Integer> List1) {
+    private boolean status = false;
+    public SeatAdapter(Context context, List<Seat> List1) {
         this.context = context;
         this.list = List1;
     }
@@ -41,10 +43,25 @@ public class SeatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-         SharedPreferences prefs =  context.getSharedPreferences(Keys.KEY_ID, MODE_PRIVATE);
-        final String  email_customer = prefs.getString(Keys.KEY_CUSTOMER,"");
-        Holder holder1 = (Holder) holder;
+       final Seat seat = list.get(position);
+        final Holder holder1 = (Holder) holder;
+        holder1.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(status == false){
+                    holder1.imageView.setBackgroundResource(R.drawable.select);
+                    status = true;
+                    seat.setStatus(true+"");
 
+                }else {
+                    holder1.imageView.setBackgroundResource(R.drawable.seat);
+                    status = false;
+                    seat.setStatus(false+"");
+                }
+
+
+            }
+        });
 
 
 
@@ -61,10 +78,10 @@ public class SeatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
     public class Holder extends RecyclerView.ViewHolder {
-
+        ImageView imageView;
         public Holder(View itemView) {
             super(itemView);
-
+           imageView = itemView.findViewById(R.id.img);
 
         }
 

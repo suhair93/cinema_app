@@ -262,6 +262,7 @@ public class add_movie extends AppCompatActivity {
                             movies.setScreen(libirty.getText().toString());
                             movies.setPrice(price.getText().toString());
                             movies.setId(uniqueID);
+                            movies.setType(mSelectedIndex+"");
                             movies.setImg(taskSnapshot.getDownloadUrl().toString());
                             ref.child("movie").push().setValue(movies);
 
