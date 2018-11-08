@@ -62,42 +62,42 @@ public class barcodeFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
 
-        Query fireQuery = ref.child("employee").orderByChild("email").equalTo(email);
-        fireQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // ازا الحساب غير موجوديظهر مسج
-                if (dataSnapshot.getValue() != null) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        employee e = snapshot.getValue(employee.class);
-                        String  car_number = e.getCar_no();
-                        String name = e.getName();
-
-                        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                        try {
-                            BitMatrix bitMatrix = multiFormatWriter.encode(car_number, BarcodeFormat.CODABAR,300,300);
-                            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                            barcode_btn.setImageBitmap(bitmap);
-                        } catch (WriterException e1) {
-                            e1.printStackTrace();
-                        }
-
-                    }
-                }
-                else {
-
-                        Toast.makeText(getActivity(), "no result", Toast.LENGTH_LONG).show();
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "no connected internet", Toast.LENGTH_SHORT).show();}
-
-
-        });
+//        Query fireQuery = ref.child("employee").orderByChild("email").equalTo(email);
+//        fireQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // ازا الحساب غير موجوديظهر مسج
+//                if (dataSnapshot.getValue() != null) {
+//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                        employee e = snapshot.getValue(employee.class);
+//                        String  car_number = e.getCar_no();
+//                        String name = e.getName();
+//
+//                        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+//                        try {
+//                            BitMatrix bitMatrix = multiFormatWriter.encode(car_number, BarcodeFormat.CODABAR,300,300);
+//                            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+//                            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+//                            barcode_btn.setImageBitmap(bitmap);
+//                        } catch (WriterException e1) {
+//                            e1.printStackTrace();
+//                        }
+//
+//                    }
+//                }
+//                else {
+//
+//                        Toast.makeText(getActivity(), "no result", Toast.LENGTH_LONG).show();
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Toast.makeText(getActivity(), "no connected internet", Toast.LENGTH_SHORT).show();}
+//
+//
+//        });
 
 
 
