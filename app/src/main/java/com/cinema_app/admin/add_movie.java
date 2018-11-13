@@ -37,6 +37,8 @@ import android.widget.Toast;
 
 import com.cinema_app.R;
 import com.cinema_app.customer.MainActivity;
+import com.cinema_app.models.Seat;
+import com.cinema_app.models.SeatList;
 import com.cinema_app.models.movies;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -73,6 +75,7 @@ public class add_movie extends AppCompatActivity {
     FirebaseDatabase database;
     private ArrayAdapter mAdapter;
     private int mSelectedIndex = 0;
+    List<Seat> seatList = new ArrayList<>();
     ProgressDialog progressDialog;
     DatabaseReference ref;
     StorageReference storageReference;
@@ -111,6 +114,13 @@ public class add_movie extends AppCompatActivity {
         upload = findViewById(R.id.upload);
         add = findViewById(R.id.add);
       type = findViewById(R.id.type);
+
+
+        for (int i =0 ; i<= 59 ; i++){
+            seatList.add(new Seat(i,false+"",""));
+        }
+
+
         // Initialize a new list
         List<String> typeFilme = new ArrayList<>();
         typeFilme.add("select type show film");
@@ -260,10 +270,18 @@ public class add_movie extends AppCompatActivity {
                             movies.setDuration(duration.getText().toString());
                             movies.setTime(time.getText().toString());
                             movies.setScreen(libirty.getText().toString());
-                            movies.setPrice(price.getText().toString());
+                            int price1 = Integer.parseInt(price.getText().toString());
+                            movies.setPrice(price1);
                             movies.setId(uniqueID);
                             movies.setType(mSelectedIndex+"");
+                            movies.setSeatList(seatList);
                             movies.setImg(taskSnapshot.getDownloadUrl().toString());
+
+                            SeatList seat = new SeatList();
+                            seat.setId_movie(uniqueID);
+                            seat.setSeatList(seatList);
+
+                            ref.child("seat").push().setValue(seat);
                             ref.child("movie").push().setValue(movies);
 
                             Toast.makeText(getBaseContext(), "image Uploaded ", Toast.LENGTH_LONG).show();
@@ -291,19 +309,7 @@ public class add_movie extends AppCompatActivity {
             //display an error if no file is selected
         }
     }
-    /////////////////////////////////////////
-    private void getPIC() {
-        //for greater than lolipop versions we need the permissions asked on runtime
-        //so if the permission is not available user will go to the screen to allow storage permission
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(add_movie.this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                    Uri.parse("package:" + add_movie.this.getPackageName()));
-            startActivity(intent);
-            return;
-        }
-    }
+
 
     @Override
     public void onRequestPermissionsResult(int RC, String per[], int[] Result) {

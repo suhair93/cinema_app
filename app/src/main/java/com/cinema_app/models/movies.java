@@ -2,23 +2,34 @@ package com.cinema_app.models;
 
 import android.widget.TextView;
 
+import java.util.List;
+
 public class movies {
 
     public String name;
     public String img;
     public String details;
-    public String price;
+    public int price;
     public String duration;
     public String time;
     public String screen;
     public String rate;
     public String type;
     public String id;
+    public List<Seat> seatList ;
 
     public movies(){}
     public movies(String name, String img) {
         this.name = name;
         this.img = img;
+    }
+
+    public List<Seat> getSeatList() {
+        return seatList;
+    }
+
+    public void setSeatList(List<Seat> seatList) {
+        this.seatList = seatList;
     }
 
     public String getId() {
@@ -37,11 +48,11 @@ public class movies {
         this.details = details;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.cinema_app.Adapter.SeatAdapter;
 import com.cinema_app.R;
 import com.cinema_app.models.Seat;
+import com.cinema_app.models.SeatList;
 import com.cinema_app.models.movies;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,16 +31,20 @@ import java.util.List;
 
 
 public class buyTick extends AppCompatActivity {
-          String id = "";
+          String id = "",name ="";
           TextView about,place,timeShow ,length,price;
           ImageView img;
           Button next;
           ProgressDialog dialog;
     FirebaseDatabase database;
     DatabaseReference ref;
+    ImageView  imageView;
+    ImageView[] imageViews ;
     RecyclerView recyclerView;
     List<Seat> list = new ArrayList<>();
+    List<Seat> listSelect = new ArrayList<>();
     SeatAdapter seatAdapter;
+    int count = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,14 +75,8 @@ public class buyTick extends AppCompatActivity {
         }
 
 
-        recyclerView = findViewById(R.id.recycler);
-        seatAdapter = new SeatAdapter(getApplicationContext(),list);
-        recyclerView.setAdapter(seatAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),10));
 
-        for (int i =0 ; i<= 59 ; i++){
-            list.add(new Seat(i,false+""));
-        }
+
 
 
         Query fireQuery = ref.child("movie").orderByChild("id").equalTo(id);
@@ -97,7 +96,10 @@ public class buyTick extends AppCompatActivity {
                         place.setText(movies.getScreen());
                         timeShow.setText(movies.getTime());
                         length.setText(movies.getDuration());
+                        price.setText(movies.getPrice()+"");
+                        name = movies.getName();
                         Glide.with(getBaseContext()).load(movies.getImg()).into(img);
+
 
 
                     }
@@ -115,16 +117,60 @@ public class buyTick extends AppCompatActivity {
             }
 
         });
-     next.setOnClickListener(new View.OnClickListener() {
+
+        Query fireQuery1 = ref.child("seat").orderByChild("id_movie").equalTo(id);
+        fireQuery1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // ازا الحساب غير موجوديظهر مسج
+                if (dataSnapshot.getValue() == null) {
+                    Toast.makeText(getBaseContext(), "Not found", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    // ازا الحساب موجوديقوم بتخزين الحساب المدخل
+                } else {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        SeatList seat = snapshot.getValue(SeatList.class);
+                         list.addAll(seat.getSeatList());
+
+                        seatAdapter = new SeatAdapter(getApplicationContext(),list,seat.getId_movie());
+                        recyclerView.setAdapter(seatAdapter);
+
+                    }
+
+
+                    dialog.dismiss();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                dialog.dismiss();
+                Toast.makeText(getBaseContext(), "no connected internet", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        recyclerView = findViewById(R.id.recycler);
+
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),10));
+
+
+
+
+        next.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
              Intent i = new Intent(buyTick.this,visacard.class);
-             i.putExtra("details",about.getText().toString());
-             i.putExtra("place",place.getText().toString());
-             i.putExtra("timeShow",timeShow.getText().toString());
-             i.putExtra("length",length.getText().toString());
-             i.putExtra("id",id);
-             i.putParcelableArrayListExtra("seat", (ArrayList<? extends Parcelable>) list);
+              i.putExtra("details",about.getText().toString());
+              i.putExtra("place",place.getText().toString());
+               i.putExtra("price",price.getText().toString());
+              i.putExtra("timeShow",timeShow.getText().toString());
+              i.putExtra("length",length.getText().toString());
+              i.putExtra("name",name);
+               i.putExtra("id",id);
+
              startActivity(i);
          }
      });

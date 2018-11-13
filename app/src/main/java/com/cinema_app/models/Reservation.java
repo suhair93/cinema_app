@@ -5,19 +5,36 @@ import java.util.ArrayList;
 public class Reservation {
 
     public String details;
-    public  String id;
+    public  int id;
     public  String price;
     public String place;
     public String timeShow;
     public  String length;
-    public  ArrayList<Seat> seats;
     public  String email_customer;
+    public String count;
+    public String name;
 
     public Reservation() {
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setEmail_customer(String email_customer) {
         this.email_customer = email_customer;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
     }
 
     public String getEmail_customer() {
@@ -32,11 +49,11 @@ public class Reservation {
         this.details = details;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -72,11 +89,6 @@ public class Reservation {
         this.length = length;
     }
 
-    public ArrayList<Seat> getSeats() {
-        return seats;
-    }
 
-    public void setSeats(ArrayList<Seat> seats) {
-        this.seats = seats;
-    }
+
 }

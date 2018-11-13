@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.cinema_app.Adapter.NowAdapter;
 import com.cinema_app.Adapter.SoonAdapter;
@@ -22,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -32,8 +35,9 @@ import java.util.List;
 public class soon extends Fragment {
     FirebaseDatabase database;
     DatabaseReference ref;
-
+    SearchView search ;
     RecyclerView recyclerView;
+    SoonAdapter nAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,23 +53,63 @@ public class soon extends Fragment {
         }
 
 
-
-        // LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        //  mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        // GetNotification(Token);
 
       final   List<movies> lList = new ArrayList<movies>();
 
 
-        final SoonAdapter nAdapter = new SoonAdapter(getContext(), lList);
+         nAdapter = new SoonAdapter(getContext(), lList);
         recyclerView.setAdapter(nAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
 
+        search = view.findViewById(R.id.search);
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Query fireQuery = ref.child("movie").orderByChild("name").equalTo(query);
+                fireQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() == null) {
+                            Toast.makeText(getActivity(), "Not found", Toast.LENGTH_SHORT).show();
+                        } else  {
+                            List<movies> searchList = new ArrayList<>();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                movies movies = snapshot.getValue(movies.class);
+                                if (movies.getType().equals("2")){
+                                    searchList.add(movies);
+                                    nAdapter = new SoonAdapter(getContext(), searchList);
+                                    recyclerView.setAdapter(nAdapter);}else{}
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        search.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                nAdapter = new SoonAdapter(getContext(), lList);
+                recyclerView.setAdapter(nAdapter);
+                return false;
+            }
+        });
 
         ref.child("movie").addValueEventListener(new ValueEventListener() {
             @Override

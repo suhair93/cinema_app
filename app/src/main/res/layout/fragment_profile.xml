@@ -39,7 +39,7 @@
         </Toolbar>
 
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,11 +52,12 @@
             >
 
             <ImageView
+                android:id="@+id/barcode"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/profile1"/>
+                android:background="@drawable/barcode"/>
 
             <android.support.design.widget.TextInputLayout
 

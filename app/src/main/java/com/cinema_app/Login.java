@@ -81,7 +81,10 @@ public class Login extends AppCompatActivity {
                     return;
                 }
                     dialog.show();
+                final SharedPreferences.Editor editor = getSharedPreferences(Keys.KEY_ID, MODE_PRIVATE).edit();
+
                 if(email.getText().toString().equals("admin")&&password.getText().toString().equals("123")){
+                    editor.putString(Keys.KEY_CUSTOMER,"");
                     Intent i = new Intent(Login.this,MainActivityAdmin.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     finish();
@@ -110,7 +113,6 @@ public class Login extends AppCompatActivity {
                                     if(searchList.get(i).getEmail().equals(email.getText().toString()) && searchList.get(i).getPassword().equals(password.getText().toString())) {
 
                                         //الاوبجكت هذا خاص بنقل البيانات من كلاس لكلاس اخر
-                                     SharedPreferences.Editor editor = getSharedPreferences(Keys.KEY_ID, MODE_PRIVATE).edit();
                                      editor.putString(Keys.KEY_CUSTOMER,email.getText().toString());
                                            editor.apply();
                                             dialog.dismiss();

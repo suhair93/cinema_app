@@ -1,19 +1,24 @@
 package com.cinema_app.customer;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.braintreepayments.cardform.OnCardFormSubmitListener;
@@ -21,14 +26,27 @@ import com.braintreepayments.cardform.utils.CardType;
 import com.braintreepayments.cardform.view.CardEditText;
 import com.braintreepayments.cardform.view.CardForm;
 import com.braintreepayments.cardform.view.SupportedCardTypesView;
+import com.cinema_app.Adapter.SeatAdapter;
 import com.cinema_app.R;
 import com.cinema_app.models.Keys;
 import com.cinema_app.models.Reservation;
 import com.cinema_app.models.Seat;
+import com.cinema_app.models.SeatList;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class visacard extends AppCompatActivity implements OnCardFormSubmitListener,
         CardEditText.OnCardTypeChangedListener {
@@ -36,11 +54,15 @@ public class visacard extends AppCompatActivity implements OnCardFormSubmitListe
     DatabaseReference ref;
     FirebaseDatabase database;
     Bundle bundle;
+    int price1 = 0;
+    int count =0 ;
+    String about= "",place= "",timeShow="" ,length="",id = "",name="";
+    TextView price,number;
+    List<Seat> list = new ArrayList<>();
     private static final CardType[] SUPPORTED_CARD_TYPES = { CardType.VISA, CardType.MASTERCARD };
 
     private SupportedCardTypesView mSupportedCardTypesView;
-    SharedPreferences prefs =  getSharedPreferences(Keys.KEY_ID, MODE_PRIVATE);
-     String  email_customer = prefs.getString(Keys.KEY_CUSTOMER,"");
+
     protected CardForm mCardForm;
 
     @Override
@@ -55,12 +77,15 @@ public class visacard extends AppCompatActivity implements OnCardFormSubmitListe
             window.setStatusBarColor(getResources().getColor(R.color.colorAccent));
 
         }
+        SharedPreferences prefs = getSharedPreferences(Keys.KEY_ID, MODE_PRIVATE);
+        final String email_customer = prefs.getString(Keys.KEY_CUSTOMER, "");
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
 
-            mSupportedCardTypesView = findViewById(R.id.supported_card_types);
+        mSupportedCardTypesView = findViewById(R.id.supported_card_types);
         mSupportedCardTypesView.setSupportedCardTypes(SUPPORTED_CARD_TYPES);
+
 
         mCardForm = findViewById(R.id.card_form);
         mCardForm.cardRequired(true)
@@ -71,28 +96,65 @@ public class visacard extends AppCompatActivity implements OnCardFormSubmitListe
                 .postalCodeRequired(true)
                 .mobileNumberRequired(true)
                 .mobileNumberExplanation("Make sure SMS is enabled for this mobile number")
-                .actionLabel( "purchase")
+                .actionLabel("purchase")
                 .setup(this);
         mCardForm.setOnCardFormSubmitListener(this);
         mCardForm.setOnCardTypeChangedListener(this);
-
-        // Warning: this is for development purposes only and should never be done outside of this example app.
-        // Failure to set FLAG_SECURE exposes your app to screenshots allowing other apps to steal card information.
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
+
         bundle = getIntent().getExtras();
-        if(bundle != null){
-            bundle.get("details");
-            bundle.get("id");
-            bundle.get("place");
-            bundle.get("timeShow");
-            bundle.get("length");
-            bundle.getParcelableArrayList("seat");
-
-
+        if (bundle != null) {
+            about = bundle.getString("details");
+            id = bundle.getString("id");
+            place = bundle.getString("place");
+            timeShow = bundle.getString("timeShow");
+            length = bundle.getString("length");
+            name = bundle.getString("name");
+            price1 = bundle.getInt(String.valueOf(price1));
 
 
         }
+
+
+        price = findViewById(R.id.price);
+        number = findViewById(R.id.number);
+
+        Query fireQuery1 = ref.child("seat").orderByChild("id_movie").equalTo(id);
+        fireQuery1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // ازا الحساب غير موجوديظهر مسج
+                if (dataSnapshot.getValue() == null) {
+                    Toast.makeText(getBaseContext(), "Not found", Toast.LENGTH_SHORT).show();
+
+                    // ازا الحساب موجوديقوم بتخزين الحساب المدخل
+                } else {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        SeatList seat = snapshot.getValue(SeatList.class);
+                        list.addAll(seat.getSeatList());
+                    }
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getId_customer().equals(email_customer)) {
+                            count++;
+
+
+                        }
+
+                    }
+                    int total = list.size() * price1;
+                    price.setText(total + "");
+                    number.setText(count + "");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getBaseContext(), "no connected internet", Toast.LENGTH_SHORT).show();
+            }
+
+        });
 
         Button payment = findViewById(R.id.payment);
         payment.setOnClickListener(new View.OnClickListener() {
@@ -103,36 +165,36 @@ public class visacard extends AppCompatActivity implements OnCardFormSubmitListe
                 builder.setCancelable(true)
                         .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                int uniqueID = generateUniqueId();
                                 Reservation reservation = new Reservation();
                                 reservation.setDetails(bundle.getString("details"));
-                                reservation.setId( bundle.getString("id"));
+                                reservation.setId(uniqueID);
                                 reservation.setLength(bundle.getString("length"));
                                 reservation.setPrice(bundle.getString("price"));
                                 reservation.setTimeShow(bundle.getString("timeShow"));
-                                reservation.setSeats(bundle.<Seat>getParcelableArrayList("seat"));
+                                reservation.setName(bundle.getString("name"));
+
                                 reservation.setEmail_customer(email_customer);
 
                                 ref.child("reservation").push().setValue(reservation);
-//                                Toast.makeText(getBaseContext(), "Thank you dear for dealing with us", Toast.LENGTH_LONG).show();
-//                                Intent i = new Intent(visacard.this,MainActivity.class);
-//                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                                startActivity(i);
-//                                finish();
-                                //System.exit(0);
-                            }
-                        })
-                        .setNegativeButton("no", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
+                                Intent i = new Intent(visacard.this,ticket_barcode.class);
+                                startActivity(i);
+
                             }
                         });
+                builder.setCancelable(true).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
 
                 AlertDialog alertdialog = builder.create();
                 alertdialog.show();
             }
         });
     }
-
     @Override
     public void onCardTypeChanged(CardType cardType) {
         if (cardType == CardType.EMPTY) {
@@ -151,7 +213,14 @@ public class visacard extends AppCompatActivity implements OnCardFormSubmitListe
             Toast.makeText(this, R.string.invalid, Toast.LENGTH_SHORT).show();
         }
     }
-
+    public static int generateUniqueId() {
+        UUID idOne = UUID.randomUUID();
+        String str=""+idOne;
+        int uid=str.hashCode();
+        String filterStr=""+uid;
+        str=filterStr.replaceAll("-", "");
+        return Integer.parseInt(str);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);

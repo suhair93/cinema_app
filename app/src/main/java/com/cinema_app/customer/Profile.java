@@ -2,21 +2,28 @@ package com.cinema_app.customer;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.cinema_app.Login;
 import com.cinema_app.R;
 import com.cinema_app.models.Keys;
+import com.cinema_app.models.Reservation;
+import com.cinema_app.models.movies;
 import com.cinema_app.models.user;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,9 +31,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -36,13 +49,14 @@ public class Profile extends Fragment {
    EditText name,password,email,phone;
    Button update,login;
    LinearLayout layout1,layout2;
-
+   ImageView barcode;
     ProgressDialog dialog;
     FirebaseDatabase database;
     DatabaseReference ref;
     List<user> userlist;
+
     SharedPreferences prefs;
-    String email_customer = "";
+    String email_customer = "",id_tickt = "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,6 +69,7 @@ public class Profile extends Fragment {
         phone = view.findViewById(R.id.phone);
         update = view.findViewById(R.id.update);
         login = view.findViewById(R.id.login);
+        barcode = view.findViewById(R.id.barcode);
 
         dialog = new ProgressDialog(getActivity());
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -75,6 +90,8 @@ public class Profile extends Fragment {
         if(bundle!=null){
             email_customer = bundle.getString(Keys.KEY_CUSTOMER,"");
         }
+
+
 
         if(!email_customer.equals("")) {
             layout1.setVisibility(View.VISIBLE);
@@ -153,6 +170,31 @@ public class Profile extends Fragment {
                 });
             }
         });
+
+
+
+        final Query query1 = ref.child("reservation").orderByChild("email_customer").equalTo(email_customer);
+
+        query1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+               Reservation r = snapshot.getValue(Reservation.class);
+               id_tickt = r.getId()+"";
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
       login.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -160,6 +202,36 @@ public class Profile extends Fragment {
               startActivity(i);
           }
       });
+
+ barcode.setOnClickListener(new View.OnClickListener() {
+     @Override
+     public void onClick(View v) {
+
+                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                         View views = inflater.inflate(R.layout.dialoge_barcode, null);
+                         alertDialog.setView(views);
+                         final AlertDialog dialog1 = alertDialog.create();
+                         dialog1.show();
+                         ImageView imageView = (ImageView) views.findViewById(R.id.imageView);
+
+
+                          ;// Whatever you need to encode in the QR code
+                         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                         try {
+                             BitMatrix bitMatrix = multiFormatWriter.encode(id_tickt, BarcodeFormat.CODABAR, 250, 250);
+                             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                             imageView.setImageBitmap(bitmap);
+                         } catch (WriterException e) {
+                             e.printStackTrace();
+                         }
+
+
+                     }
+                 });
+
 
 
 

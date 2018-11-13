@@ -17,10 +17,22 @@ public class Seat implements Parcelable {
 
     public int id;
     public String status;
+    public String id_customer;
 
-    public Seat(int id, String status) {
+    public Seat(int id, String status,String id_customer) {
         this.id = id;
         this.status = status;
+        this.id_customer = id_customer;
+    }
+
+
+
+    public String getId_customer() {
+        return id_customer;
+    }
+
+    public void setId_customer(String id_customer) {
+        this.id_customer = id_customer;
     }
 
     public Seat(){}

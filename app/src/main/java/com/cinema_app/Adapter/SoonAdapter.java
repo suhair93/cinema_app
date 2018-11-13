@@ -52,13 +52,15 @@ public class SoonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         holder1.book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!email_customer.equals("")){
-                    Intent i = new Intent(context,buyTick.class);
-                    i.putExtra("id",movies.getId());
-                    context.startActivity(i);}
-                else{
+                if(email_customer.equals("")){
                     Intent i = new Intent(context,Login.class);
                     context.startActivity(i);
+                }
+                else{
+                    Intent i = new Intent(context,buyTick.class);
+                    i.putExtra("id",movies.getId());
+                    context.startActivity(i);
+
                 }
             }
         });
