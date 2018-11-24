@@ -75,7 +75,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
          Holder.title.setText(movies.getName());
          Holder.details.setText(movies.getDetails());
-         Holder.price.setText(movies.getPrice());
+         Holder.price.setText(movies.getPrice() +"");
          Holder.duration.setText(movies.getDuration());
          Holder.libirty.setText(movies.getScreen());
          Holder.time.setText(movies.getTime());
@@ -141,7 +141,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                  title.setText(movies.getName());
                  details.setText(movies.getDetails());
-                 price.setText(movies.getPrice());
+                 price.setText(movies.getPrice()+"");
                  duration.setText(movies.getDuration());
                  libirty.setText(movies.getScreen());
                  time.setText(movies.getTime());

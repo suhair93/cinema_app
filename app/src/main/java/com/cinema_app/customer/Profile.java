@@ -83,13 +83,9 @@ public class Profile extends Fragment {
         layout2 = view.findViewById(R.id.layout2);
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
-     //   prefs =  getActivity().getSharedPreferences(Keys.KEY_ID, MODE_PRIVATE);
-      //  email_customer = prefs.getString(Keys.KEY_CUSTOMER,"");
+        prefs =  getActivity().getSharedPreferences(Keys.KEY_ID, MODE_PRIVATE);
+        email_customer = prefs.getString(Keys.KEY_CUSTOMER,"");
 
-        Bundle bundle = getActivity().getIntent().getExtras();
-        if(bundle!=null){
-            email_customer = bundle.getString(Keys.KEY_CUSTOMER,"");
-        }
 
 
 

@@ -26,12 +26,14 @@ import com.braintreepayments.cardform.utils.CardType;
 import com.braintreepayments.cardform.view.CardEditText;
 import com.braintreepayments.cardform.view.CardForm;
 import com.braintreepayments.cardform.view.SupportedCardTypesView;
+import com.bumptech.glide.Glide;
 import com.cinema_app.Adapter.SeatAdapter;
 import com.cinema_app.R;
 import com.cinema_app.models.Keys;
 import com.cinema_app.models.Reservation;
 import com.cinema_app.models.Seat;
 import com.cinema_app.models.SeatList;
+import com.cinema_app.models.movies;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -105,17 +107,49 @@ public class visacard extends AppCompatActivity implements OnCardFormSubmitListe
 
         bundle = getIntent().getExtras();
         if (bundle != null) {
-            about = bundle.getString("details");
+
             id = bundle.getString("id");
-            place = bundle.getString("place");
-            timeShow = bundle.getString("timeShow");
-            length = bundle.getString("length");
-            name = bundle.getString("name");
-            price1 = bundle.getInt(String.valueOf(price1));
+
 
 
         }
+        Query fireQuery = ref.child("movie").orderByChild("id").equalTo(id);
+        fireQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // ازا الحساب غير موجوديظهر مسج
+                if (dataSnapshot.getValue() == null) {
+                    Toast.makeText(getBaseContext(), "Not found", Toast.LENGTH_SHORT).show();
 
+                    // ازا الحساب موجوديقوم بتخزين الحساب المدخل
+                } else {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        movies movies = snapshot.getValue(movies.class);
+                        about=(movies.getDetails());
+                        place=(movies.getScreen());
+                        timeShow=(movies.getTime());
+                        length=(movies.getDuration());
+                        price1= (movies.getPrice());
+                        name = movies.getName();
+
+
+
+                    }
+
+
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                Toast.makeText(getBaseContext(), "no connected internet", Toast.LENGTH_SHORT).show();
+            }
+
+        });
 
         price = findViewById(R.id.price);
         number = findViewById(R.id.number);
@@ -167,12 +201,13 @@ public class visacard extends AppCompatActivity implements OnCardFormSubmitListe
                             public void onClick(DialogInterface dialog, int id) {
                                 int uniqueID = generateUniqueId();
                                 Reservation reservation = new Reservation();
-                                reservation.setDetails(bundle.getString("details"));
+
+                                reservation.setDetails(about);
                                 reservation.setId(uniqueID);
-                                reservation.setLength(bundle.getString("length"));
-                                reservation.setPrice(bundle.getString("price"));
-                                reservation.setTimeShow(bundle.getString("timeShow"));
-                                reservation.setName(bundle.getString("name"));
+                                reservation.setLength( length);
+                                reservation.setPrice( price1 + "");
+                                reservation.setTimeShow( timeShow);
+                                reservation.setName( name);
 
                                 reservation.setEmail_customer(email_customer);
 

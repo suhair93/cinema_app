@@ -80,7 +80,7 @@ public class add_movie extends AppCompatActivity {
     DatabaseReference ref;
     StorageReference storageReference;
     public static final String STORAGE_PATH_UPLOADS = "uploads_movie/";
-    public static final String DATABASE_PATH_UPLOADS = "uploads";
+
     private static final int PICK_IMAGE_REQUEST = 234;
     private Uri filePath;
   Button add;
@@ -143,7 +143,6 @@ public class add_movie extends AppCompatActivity {
 
                 // Set the text color of drop down items
                 tv.setTextColor(Color.BLACK);
-
                 // If this item is selected item
                 if(position == mSelectedIndex){
                     // Set spinner selected popup item's text color

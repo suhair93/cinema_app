@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.braintreepayments:card-form:3.3.0'
     implementation 'com.karumi:dexter:4.2.0'
 
-   implementation 'com.google.android.gms:play-services-vision:11.0.2'
+    implementation 'com.google.android.gms:play-services-vision:11.0.2'
     // vision barcode scanner
     implementation 'info.androidhive:barcode-reader:1.1.5'
 

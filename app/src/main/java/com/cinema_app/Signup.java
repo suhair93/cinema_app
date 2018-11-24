@@ -113,7 +113,7 @@ public class Signup extends AppCompatActivity {
                         if (dataSnapshot.getValue() == null) {
 
 
-                            // اوبجكت من نوع يوزر لتخزين بيانات الادمن الجديد
+                            // اوبجكت من نوع يوزر لتخزين بs account alيانات الادمن الجديد
                             user user = new user();
                             user.setEmail(email.getText().toString());
                             user.setPassword(password.getText().toString());
@@ -131,7 +131,7 @@ public class Signup extends AppCompatActivity {
                         } else {
                             // عند عدم تحقق الشرط ووجود المستخدم تظهر هذه الرسالة
                             dialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "This account already exists", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Thiready exists", Toast.LENGTH_SHORT).show();
 
 
                         }

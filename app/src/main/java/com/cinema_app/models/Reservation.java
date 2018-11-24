@@ -6,6 +6,7 @@ public class Reservation {
 
     public String details;
     public  int id;
+
     public  String price;
     public String place;
     public String timeShow;

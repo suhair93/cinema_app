@@ -85,6 +85,7 @@ public class Login extends AppCompatActivity {
 
                 if(email.getText().toString().equals("admin")&&password.getText().toString().equals("123")){
                     editor.putString(Keys.KEY_CUSTOMER,"");
+                    editor.apply();
                     Intent i = new Intent(Login.this,MainActivityAdmin.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     finish();
@@ -114,6 +115,8 @@ public class Login extends AppCompatActivity {
 
                                         //الاوبجكت هذا خاص بنقل البيانات من كلاس لكلاس اخر
                                      editor.putString(Keys.KEY_CUSTOMER,email.getText().toString());
+                                     editor.putString(Keys.KEY_NAME,searchList.get(i).getName());
+
                                            editor.apply();
                                             dialog.dismiss();
                                             // الانتقال لواجهة الرئيسية اللادمن

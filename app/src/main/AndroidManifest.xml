@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name=".Login"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Signup"
             android:windowSoftInputMode="stateHidden" />
@@ -41,7 +41,8 @@
             android:name=".admin.MainActivityAdmin"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".admin.add_movie" />
-        <activity android:name=".customer.ticket_barcode"></activity>
+        <activity android:name=".customer.ticket_barcode" />
+        <activity android:name=".Seat_reservation"></activity>
     </application>
 
 </manifest>
